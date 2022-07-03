@@ -5,7 +5,7 @@ export interface IState {
   pdfFile: IPdfFile | undefined;
   pdfName: string;
   pages: any[];
-  pageScale: number[];
+  pagesScale: number[];
   allObjects: IDrawingObj[][];
   currentFont: string;
   selectedPageIndex: number;

@@ -16,8 +16,8 @@ interface IPagesActionType {
 }
 
 interface IPagesScaleActionType {
-  type: "setPageScale";
-  payload: IState["pageScale"];
+  type: "setPagesScale";
+  payload: IState["pagesScale"] | { index: number; scale: number };
 }
 
 interface IAllObjectsScaleActionType {

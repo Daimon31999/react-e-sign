@@ -9,8 +9,16 @@ export const reducer = (state: IState, { type, payload }: IAction): IState => {
       return { ...state, pdfName: payload };
     case "setPages":
       return { ...state, pages: payload };
-    case "setPageScale":
-      return { ...state, pageScale: payload };
+    case "setPagesScale":
+      let computedPagesScale = state.pagesScale;
+
+      if (Array.isArray(payload)) {
+        computedPagesScale = payload;
+      } else {
+        computedPagesScale[payload.index] = payload.scale;
+      }
+
+      return { ...state, pagesScale: computedPagesScale };
     case "setAllObjects":
       return { ...state, allObjects: payload };
     case "setCurrentFont":
@@ -30,7 +38,7 @@ export const initialState: IState = {
   pdfFile: undefined,
   pdfName: "",
   pages: [],
-  pageScale: [],
+  pagesScale: [],
   allObjects: [],
   currentFont: "Times-Roman",
   selectedPageIndex: -1,
