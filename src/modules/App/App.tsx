@@ -1,29 +1,33 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
+import { useReducer } from "react";
 import { IDrawingObj } from "../../types/IDrawingObj";
-import { IPdfFile } from "../../types/IPdfFile";
 import { readAsPDF } from "../../utils/js/asyncReader";
 import { ggID } from "../../utils/js/helper";
 import prepareAssets, {
   getAsset,
   fetchFont,
 } from "../../utils/js/prepareAssets";
+import { initialState, reducer } from "./state";
 
 // for generating PDF
 getAsset("pdfjsLib");
+
 const App: React.FC = () => {
   const genID = ggID();
   // TODO: add type File
-  const [pdfFile, setPdfFile] = useState<IPdfFile>();
-  const [pdfName, setPdfName] = useState<string>("");
-  const [pages, setPages] = useState<any>([]);
-  const [pageScale, setPageScale] = useState<number[]>([]);
-  const [allObjects, setAllObjects] = useState<IDrawingObj[]>([]);
-  const [currentFont, setCurrentFont] = useState<string>("Times-Roman");
-  const [selectedPageIndex, setSelectedPageIndex] = useState<number>(-1);
-  const [saving, setSaving] = useState<boolean>(false);
+  // const [pdfFile, setPdfFile] = useState<IPdfFile>();
+  // const [pdfName, setPdfName] = useState<string>("");
+  // const [pages, setPages] = useState<any>([]);
+  // const [pageScale, setPageScale] = useState<number[]>([]);
+  // const [allObjects, setAllObjects] = useState<IDrawingObj[]>([]);
+  // const [currentFont, setCurrentFont] = useState<string>("Times-Roman");
+  // const [selectedPageIndex, setSelectedPageIndex] = useState<number>(-1);
+  // const [saving, setSaving] = useState<boolean>(false);
   // is drawing modal open
-  const [addingDrawing, setAddingDrawing] = useState<boolean>(false);
+  // const [addingDrawing, setAddingDrawing] = useState<boolean>(false);
+
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   // utils functions declarations
   const addPDF = async (file: any) => {
@@ -32,15 +36,17 @@ const App: React.FC = () => {
       const pdf = await readAsPDF(file);
       const numPages = pdf.numPages;
 
-      setPdfName(file.name);
-      setPdfFile(file);
-      setPages(
-        Array(numPages)
+      dispatch({ type: "setPdfName", payload: file.name });
+      dispatch({ type: "setPdfFile", payload: file });
+      dispatch({
+        type: "setPages",
+        payload: Array(numPages)
           .fill(undefined)
-          .map((_, i) => pdf.getPage(i + 1))
-      );
-      setAllObjects(pages.map(() => []));
-      setPageScale(Array(numPages).fill(1));
+          .map((_, i) => pdf.getPage(i + 1)),
+      });
+
+      dispatch({ type: "setAllObjects", payload: state.pages.map(() => []) });
+      dispatch({ type: "setPageScale", payload: Array(numPages).fill(1) });
     } catch (e) {
       console.log("Failed to add pdf.");
       throw e;
@@ -56,10 +62,10 @@ const App: React.FC = () => {
 
         await addPDF(pdfBlob);
 
-        setSelectedPageIndex(0);
+        dispatch({ type: "setSelectedPageIndex", payload: 0 });
 
         setTimeout(() => {
-          fetchFont(currentFont);
+          fetchFont(state.currentFont);
           prepareAssets();
         }, 5000);
       } catch (e) {
