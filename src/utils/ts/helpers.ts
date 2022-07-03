@@ -4,11 +4,9 @@ import { readAsDataURL, readAsImage, readAsPDF } from "../js/asyncReader";
 import { save } from "../js/PDF";
 import { fetchFont } from "../js/prepareAssets";
 
-export const addPDF = async (
-  file: any,
-  state: IState,
-  dispatch: React.Dispatch<IAction>
-) => {
+type IDispatch = React.Dispatch<IAction>;
+
+export const addPDF = async (file: any, state: IState, dispatch: IDispatch) => {
   try {
     const pdf = await readAsPDF(file);
     const numPages = pdf.numPages;
@@ -33,7 +31,7 @@ export const addPDF = async (
 export const onUploadPDF = async (
   e: any,
   state: IState,
-  dispatch: React.Dispatch<IAction>
+  dispatch: IDispatch
 ) => {
   const files = e.target.files || (e.dataTransfer && e.dataTransfer.files);
   const file = files[0];
@@ -54,7 +52,7 @@ export const onUploadPDF = async (
 export const addImage = async (
   file: any,
   state: IState,
-  dispatch: React.Dispatch<IAction>,
+  dispatch: IDispatch,
   getId: () => number
 ) => {
   try {
@@ -89,7 +87,7 @@ export const addImage = async (
 export const onUploadImage = (
   e: any,
   state: IState,
-  dispatch: React.Dispatch<IAction>,
+  dispatch: IDispatch,
   genId: () => number
 ) => {
   // FIXME: possible bug here
@@ -104,7 +102,7 @@ export const onUploadImage = (
 
 export const onAddTextField = (
   state: IState,
-  dispatch: React.Dispatch<IAction>,
+  dispatch: IDispatch,
   genID: () => number,
   text = "New Text Field"
 ) => {
@@ -135,10 +133,7 @@ export const onAddTextField = (
   }
 };
 
-export const onAddDrawing = (
-  state: IState,
-  dispatch: React.Dispatch<IAction>
-) => {
+export const onAddDrawing = (state: IState, dispatch: IDispatch) => {
   if (state.selectedPageIndex >= 0) {
     dispatch({ type: "setAddingDrawing", payload: true });
   }
@@ -150,7 +145,7 @@ export const addDrawing = (
   path: string,
   scale = 1,
   state: IState,
-  dispatch: React.Dispatch<IAction>,
+  dispatch: IDispatch,
   getId: () => number
 ) => {
   const id = getId();
@@ -174,17 +169,14 @@ export const addDrawing = (
   dispatch({ type: "setAllObjects", payload });
 };
 
-export const selectFontFamily = (e: any, dispatch: React.Dispatch<IAction>) => {
+export const selectFontFamily = (e: any, dispatch: IDispatch) => {
   const name = e.detail.name;
   fetchFont(name);
 
   dispatch({ type: "setCurrentFont", payload: name });
 };
 
-export const selectPage = (
-  index: number,
-  dispatch: React.Dispatch<IAction>
-) => {
+export const selectPage = (index: number, dispatch: IDispatch) => {
   dispatch({ type: "setSelectedPageIndex", payload: index });
 };
 
@@ -192,7 +184,7 @@ export const updateObject = (
   objectId: number,
   payload: any,
   state: IState,
-  dispatch: React.Dispatch<IAction>
+  dispatch: IDispatch
 ) => {
   const { allObjects, selectedPageIndex } = state;
 
@@ -210,7 +202,7 @@ export const updateObject = (
 export const deleteObject = (
   objectId: number,
   state: IState,
-  dispatch: React.Dispatch<IAction>
+  dispatch: IDispatch
 ) => {
   const { allObjects, selectedPageIndex } = state;
 
@@ -226,15 +218,12 @@ export const deleteObject = (
 export const onMeasure = (
   scale: number,
   index: number,
-  dispatch: React.Dispatch<IAction>
+  dispatch: IDispatch
 ) => {
   dispatch({ type: "setPagesScale", payload: { index, scale } });
 };
 
-export const savePDF = async (
-  state: IState,
-  dispatch: React.Dispatch<IAction>
-) => {
+export const savePDF = async (state: IState, dispatch: IDispatch) => {
   const { pdfFile, saving, pages, allObjects, pdfName } = state;
 
   if (!pdfFile || saving || !pages.length) return;
