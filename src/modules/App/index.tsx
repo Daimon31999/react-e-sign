@@ -10,6 +10,7 @@ import prepareAssets, {
 } from "../../utils/js/prepareAssets";
 import { addPDF, onUploadPDF } from "./helpers";
 import { initialState, reducer } from "./store";
+import ESign from "../Svelte";
 
 // for generating PDF
 getAsset("pdfjsLib");
@@ -53,6 +54,7 @@ const App: React.FC = () => {
         onChange={(e) => onUploadPDF(e, state, dispatch)}
       />
       <h1>hell</h1>
+      <ESign />
     </div>
   );
 };
