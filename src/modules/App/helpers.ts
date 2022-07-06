@@ -1,8 +1,12 @@
-import { IAction } from "../../types/IAction";
-import { IState } from "../../types/IState";
-import { readAsDataURL, readAsImage, readAsPDF } from "../js/asyncReader";
-import { save } from "../js/PDF";
-import { fetchFont } from "../js/prepareAssets";
+import { IAction } from "./types/IAction";
+import { IState } from "./types/IState";
+import {
+  readAsDataURL,
+  readAsImage,
+  readAsPDF,
+} from "../../utils/js/asyncReader";
+import { save } from "../../utils/js/PDF";
+import { fetchFont } from "../../utils/js/prepareAssets";
 
 type IDispatch = React.Dispatch<IAction>;
 
@@ -60,7 +64,7 @@ export const addImage = async (
     const url = await readAsDataURL(file);
     const img = await readAsImage(url);
 
-    // FIXME: possible bug here
+    // BUG: possible bug here
     const id = getId();
     const { width, height } = img;
     const object = {
@@ -90,7 +94,7 @@ export const onUploadImage = (
   dispatch: IDispatch,
   genId: () => number
 ) => {
-  // FIXME: possible bug here
+  // BUG: possible bug here
   const file = e.target.files && e.target.files[0];
 
   if (file && state.selectedPageIndex >= 0) {

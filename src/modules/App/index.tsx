@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useReducer } from "react";
-import { IDrawingObj } from "../../types/IDrawingObj";
+import { IDrawingObj } from "./types/IDrawingObj";
 import { readAsPDF } from "../../utils/js/asyncReader";
 import { ggID } from "../../utils/js/helper";
 import prepareAssets, {
   getAsset,
   fetchFont,
 } from "../../utils/js/prepareAssets";
-import { addPDF, onUploadPDF } from "../../utils/ts/helpers";
-import { initialState, reducer } from "./state";
+import { addPDF, onUploadPDF } from "./helpers";
+import { initialState, reducer } from "./store";
 
 // for generating PDF
 getAsset("pdfjsLib");

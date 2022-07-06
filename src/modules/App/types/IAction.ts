@@ -1,57 +1,57 @@
 import { IState } from "./IState";
 
-interface IPdfFileActionType {
+interface IPdfFileAction {
   type: "setPdfFile";
   payload: IState["pdfFile"];
 }
 
-interface IPdfNameActionType {
+interface IPdfNameAction {
   type: "setPdfName";
   payload: IState["pdfName"];
 }
 
-interface IPagesActionType {
+interface IPagesAction {
   type: "setPages";
   payload: IState["pages"];
 }
 
-interface IPagesScaleActionType {
+interface IPagesScaleAction {
   type: "setPagesScale";
   payload: IState["pagesScale"] | { index: number; scale: number };
 }
 
-interface IAllObjectsScaleActionType {
+interface IAllObjectsScaleAction {
   type: "setAllObjects";
   payload: IState["allObjects"];
 }
 
-interface ICurrentFontActionType {
+interface ICurrentFontAction {
   type: "setCurrentFont";
   payload: IState["currentFont"];
 }
 
-interface ISelectedPageIndexActionType {
+interface ISelectedPageIndexAction {
   type: "setSelectedPageIndex";
   payload: IState["selectedPageIndex"];
 }
 
-interface ISavingActionType {
+interface ISavingAction {
   type: "setSaving";
   payload: IState["saving"];
 }
 
-interface IAddingDrawingActionType {
+interface IAddingDrawingAction {
   type: "setAddingDrawing";
   payload: IState["addingDrawing"];
 }
 
 export type IAction =
-  | IPdfFileActionType
-  | IPdfNameActionType
-  | IPagesActionType
-  | IPagesScaleActionType
-  | IAllObjectsScaleActionType
-  | ICurrentFontActionType
-  | ISelectedPageIndexActionType
-  | ISavingActionType
-  | IAddingDrawingActionType;
+  | IPdfFileAction
+  | IPdfNameAction
+  | IPagesAction
+  | IPagesScaleAction
+  | IAllObjectsScaleAction
+  | ICurrentFontAction
+  | ISelectedPageIndexAction
+  | ISavingAction
+  | IAddingDrawingAction;

@@ -1,5 +1,5 @@
-import { IAction } from "../../types/IAction";
-import { IState } from "../../types/IState";
+import { IAction } from "./types/IAction";
+import { IState } from "./types/IState";
 
 export const reducer = (state: IState, { type, payload }: IAction): IState => {
   switch (type) {
