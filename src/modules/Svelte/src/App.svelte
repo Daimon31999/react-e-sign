@@ -18,20 +18,58 @@
   import { save } from "./utils/PDF.js";
 
   const genID = ggID();
-  let pdfFile;
-  let pdfName = "";
-  let pages = [];
-  let pagesScale = [];
-  let allObjects = [];
-  let currentFont = "Times-Roman";
-  let selectedPageIndex = -1;
-  let saving = false;
-  let addingDrawing = false;
 
-  // for test purpose
+  export let dispatch;
+  export let state;
+
+  let {
+    pdfFile,
+    pdfName,
+    pages,
+    pagesScale,
+    allObjects,
+    currentFont,
+    selectedPageIndex,
+    saving,
+    addingDrawing,
+  } = state;
+
+  // let pdfFile;
+  // let pdfName = "";
+  // let pages = [];
+  // let pagesScale = [];
+  // let allObjects = [];
+  // let currentFont = "Times-Roman";
+  // let selectedPageIndex = -1;
+  // let saving = false;
+  // let addingDrawing = false;
+
+  $: {
+    dispatch({ type: "setPdfName", payload: pdfName });
+  }
+
+  $: {
+    const logObj = {
+      pdfFile,
+      pdfName,
+      pages,
+      pagesScale,
+      allObjects,
+      currentFont,
+      selectedPageIndex,
+      saving,
+      addingDrawing,
+    };
+
+    console.log("pdfNamasde", pdfName === state.pdfName);
+    console.log("statesssss", JSON.stringify(state) === JSON.stringify(logObj));
+
+    console.log("logObj", logObj);
+  }
+
   onMount(async () => {
     try {
-      const res = await fetch("/test.pdf");
+      const res = await fetch("/sample.pdf");
       const pdfBlob = await res.blob();
       await addPDF(pdfBlob);
       selectedPageIndex = 0;
@@ -39,10 +77,6 @@
         fetchFont(currentFont);
         prepareAssets();
       }, 5000);
-      // const imgBlob = await (await fetch("/test.jpg")).blob();
-      // addImage(imgBlob);
-      // addTextField("測試!");
-      // addDrawing(200, 100, "M30,30 L100,50 L50,70", 0.5);
     } catch (e) {
       console.log(e);
     }
@@ -177,7 +211,6 @@
   }
   function onMeasure(scale, i) {
     pagesScale[i] = scale;
-    console.log("onMeasure", pagesScale);
   }
   // FIXME: Should wait all objects finish their async work
   async function savePDF() {
@@ -208,6 +241,7 @@
       type="file"
       name="pdf"
       id="pdf"
+      accept="application/pdf"
       on:change={onUploadPDF}
       class="hidden"
     />
@@ -236,7 +270,7 @@
         class:cursor-not-allowed={selectedPageIndex < 0}
         class:bg-gray-500={selectedPageIndex < 0}
       >
-        <img src="image.svg" alt="An icon for adding images" />
+        <img src="img/image.svg" alt="An icon for adding images" />
       </label>
       <label
         class="flex items-center justify-center h-full w-8 hover:bg-gray-500
@@ -246,7 +280,7 @@
         class:bg-gray-500={selectedPageIndex < 0}
         on:click={onAddTextField}
       >
-        <img src="notes.svg" alt="An icon for adding text" />
+        <img src="img/notes.svg" alt="An icon for adding text" />
       </label>
       <label
         class="flex items-center justify-center h-full w-8 hover:bg-gray-500
@@ -255,11 +289,11 @@
         class:cursor-not-allowed={selectedPageIndex < 0}
         class:bg-gray-500={selectedPageIndex < 0}
       >
-        <img src="gesture.svg" alt="An icon for adding drawing" />
+        <img src="img/gesture.svg" alt="An icon for adding drawing" />
       </label>
     </div>
     <div class="justify-center mr-3 md:mr-4 w-full max-w-xs hidden md:flex">
-      <img src="/edit.svg" class="mr-2" alt="a pen, edit pdf name" />
+      <img src="img/edit.svg" class="mr-2" alt="a pen, edit pdf name" />
       <input
         placeholder="Rename your PDF here"
         type="text"
@@ -276,12 +310,6 @@
     >
       {saving ? "Saving" : "Save"}
     </button>
-    <a href="https://github.com/ShizukuIchi/pdf-editor">
-      <img
-        src="/GitHub-Mark-32px.png"
-        alt="A GitHub icon leads to personal GitHub page"
-      />
-    </a>
   </div>
   {#if addingDrawing}
     <div
