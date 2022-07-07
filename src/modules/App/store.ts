@@ -4,8 +4,6 @@ import { IState } from "./types/IState";
 export const reducer = (state: IState, action: IAction): IState => {
   const { type, payload } = action;
 
-  console.log("typesdaf", action);
-
   switch (type) {
     case "setPdfFile":
       return { ...state, pdfFile: payload };

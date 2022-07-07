@@ -9,8 +9,13 @@ interface IProps {
   dispatch: React.Dispatch<IAction>;
 }
 
-const ESign: React.FC<IProps> = ({ state, dispatch }) => {
+const ESign: React.FC<IProps> = (props) => {
+  const { state, dispatch } = props;
   const ref = useRef(null);
+
+  useEffect(() => {
+    console.log("state", state);
+  }, [state]);
 
   useEffect(() => {
     const component = new SvelteComponent({

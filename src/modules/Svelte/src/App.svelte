@@ -16,6 +16,7 @@
   } from "./utils/asyncReader.js";
   import { ggID } from "./utils/helper.js";
   import { save } from "./utils/PDF.js";
+  import { capitalizeFirstLetter } from "./utils/utils";
 
   const genID = ggID();
 
@@ -34,37 +35,20 @@
     addingDrawing,
   } = state;
 
-  // let pdfFile;
-  // let pdfName = "";
-  // let pages = [];
-  // let pagesScale = [];
-  // let allObjects = [];
-  // let currentFont = "Times-Roman";
-  // let selectedPageIndex = -1;
-  // let saving = false;
-  // let addingDrawing = false;
-
   $: {
+    // const keys = Object.keys(state).map(
+    //   (key) => `set${capitalizeFirstLetter(key)}`
+    // );
+
     dispatch({ type: "setPdfName", payload: pdfName });
-  }
-
-  $: {
-    const logObj = {
-      pdfFile,
-      pdfName,
-      pages,
-      pagesScale,
-      allObjects,
-      currentFont,
-      selectedPageIndex,
-      saving,
-      addingDrawing,
-    };
-
-    console.log("pdfNamasde", pdfName === state.pdfName);
-    console.log("statesssss", JSON.stringify(state) === JSON.stringify(logObj));
-
-    console.log("logObj", logObj);
+    dispatch({ type: "setPdfFile", payload: pdfFile });
+    dispatch({ type: "setPages", payload: pages });
+    dispatch({ type: "setPagesScale", payload: pagesScale });
+    dispatch({ type: "setAllObjects", payload: allObjects });
+    dispatch({ type: "setCurrentFont", payload: currentFont });
+    dispatch({ type: "setSelectedPageIndex", payload: selectedPageIndex });
+    dispatch({ type: "setSaving", payload: saving });
+    dispatch({ type: "setAddingDrawing", payload: addingDrawing });
   }
 
   onMount(async () => {
