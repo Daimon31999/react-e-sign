@@ -55,3 +55,5 @@ export type IAction =
   | ISelectedPageIndexAction
   | ISavingAction
   | IAddingDrawingAction;
+
+export type actionTypes = IAction["type"];

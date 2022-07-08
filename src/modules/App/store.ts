@@ -1,7 +1,9 @@
 import { IAction } from "./types/IAction";
 import { IState } from "./types/IState";
 
-export const reducer = (state: IState, { type, payload }: IAction): IState => {
+export const reducer = (state: IState, action: IAction): IState => {
+  const { type, payload } = action;
+
   switch (type) {
     case "setPdfFile":
       return { ...state, pdfFile: payload };
